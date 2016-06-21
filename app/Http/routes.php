@@ -14,7 +14,8 @@
 $app->get('/', function () use ($app) {
     return $app->welcome();
 });
-$app->get('/test', 'HomeController@index' );
+$app->get('/test', 'TestController@test' );
+$app->get('/info', 'TestController@info' );
 
 
 $app->post('oauth/access_token', function() {

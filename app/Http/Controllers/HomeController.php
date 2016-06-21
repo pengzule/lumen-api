@@ -9,7 +9,7 @@ use Log;
 
 
 $SoaRoot = '/mnt/hgfs/linux_code/lumen-api/app/Soa';
-$file = '/mnt/hgfs/linux_code/lumen-api/app/Entity/Member.php';
+$file = '/mnt/hgfs/linux_code/lumen-api/app';
 require_once $SoaRoot. '/Thrift/ClassLoader/ThriftClassLoader.php';
 require_once $SoaRoot. '/idl/PhpRemote/PhpRemote.php';
 require_once $SoaRoot. '/idl/PhpRemote/Types.php';
@@ -21,7 +21,9 @@ use Thrift\Protocol\TBinaryProtocol;
 use Thrift\Transport\TPhpStream;
 use Thrift\Transport\TBufferedTransport;
 use App\Soa\idl\PhpRemote\PhpRemoteIf ;
+use App\Soa\idl\PhpRemote\Test ;
 use App\Entity\Member;
+use App\Http\Controllers\TestController;
 use App\Soa\idl\PhpRemote\PhpRemoteProcessor;
 
 class HomeController  implements PhpRemoteIf
@@ -38,8 +40,13 @@ class HomeController  implements PhpRemoteIf
     file_put_contents('Serverlog.txt',$inMethod,FILE_APPEND);
     return 1;
   }
+
   public function getFunc($inMethod, $inParams)
   {
+
+
+    $func = __FUNCTION__;
+    Log::info($func);
     $mysqli  =  mysqli_init ();
     if (! $mysqli ) {
       die( 'mysqli_init failed' );
@@ -53,7 +60,7 @@ class HomeController  implements PhpRemoteIf
       die( 'Setting MYSQLI_OPT_CONNECT_TIMEOUT failed' );
     }
 
-    if (! $mysqli -> real_connect ( '192.168.226.88' ,  'root' ,  'root' ,  'book' )) {
+    if (! $mysqli -> real_connect ( '192.168.226.85' ,  'root' ,  'root' ,  'book' )) {
       die( 'Connect Error ('  .  mysqli_connect_errno () .  ') '
           .  mysqli_connect_error ());
     }
