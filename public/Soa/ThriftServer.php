@@ -6,6 +6,33 @@ service PhpRemote{
  string getFunc(1: string inMethod, 2:string inParams),
 }
 */
+
+/*
+|--------------------------------------------------------------------------
+| Create The Application
+|--------------------------------------------------------------------------
+|
+| First we need to get an application instance. This creates an instance
+| of the application / container and bootstraps the application so it
+| is ready to receive HTTP / Console requests from the environment.
+|
+*/
+
+require_once __DIR__.'/../../bootstrap/app.php';
+
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+|
+| Once we have the application, we can handle the incoming request
+| through the kernel, and send the associated response back to
+| the client's browser allowing them to enjoy the creative
+| and wonderful application we have prepared for them.
+|
+*/
+
+
 	error_reporting(E_ALL);
 
 	//$thriftLib = '/jqm/smarthome/thrift/thrift-0.9.3/lib/php/lib';
@@ -23,6 +50,8 @@ service PhpRemote{
 	use Thrift\Transport\TPhpStream;
 	use Thrift\Transport\TBufferedTransport;
 		use Log;
+use App\Entity\Member;
+use Illuminate\Http\Request;
 
 	// Load
 	$loader = new ThriftClassLoader();
@@ -43,11 +72,13 @@ service PhpRemote{
 		}
  		public function getFunc($inMethod, $inParams)
 		{
-			$url = 'http://192.168.226.85:9090/info';
-			$result = file_get_contents($url);
+
+			Log::info('aa');
+			$result = 'info';
+			$member = Member::where('id',2)->get();
 			file_put_contents('Serverlog.txt',$inMethod,FILE_APPEND);
 			file_put_contents('Serverlog.txt',$inMethod,FILE_APPEND);
-			return $result;
+			return $member;
 		}
 	};
 
@@ -60,4 +91,4 @@ service PhpRemote{
 	$transport->open();
 	$processor->process($protocol, $protocol);
 	$transport->close();
-?>
+

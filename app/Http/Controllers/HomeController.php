@@ -46,6 +46,7 @@ class HomeController  implements PhpRemoteIf
 
 
     $func = __FUNCTION__;
+    echo $func;
     Log::info($func);
     $mysqli  =  mysqli_init ();
     if (! $mysqli ) {
