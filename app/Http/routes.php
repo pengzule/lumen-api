@@ -14,9 +14,10 @@
 $app->get('/', function () use ($app) {
     return $app->welcome();
 });
-$app->get('/test', 'TestController@test' );
-$app->get('/info', 'TestController@info' );
+$app->get('/test', 'TestController@index');
+$app->get('/category','CategoryController@getCategory');
 
+$app->get('/form', 'GenericAgentController@index' );
 
 $app->post('oauth/access_token', function() {
     return response()->json(app('oauth2-server.authorizer')->issueAccessToken());

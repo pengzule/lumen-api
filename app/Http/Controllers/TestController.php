@@ -2,32 +2,33 @@
 
 App\Http\Controllers;
 
+use App\Entity\Product;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HomeController;
 
 
 
-
-
+    require_once  '/mnt/hgfs/linux_code/lumen-api/app/Soa/idl/PhpRemote/PhpRemote.php';
 
 // 没有设置路径就直接把文件夹拷贝到当前目录下
     use Thrift\ClassLoader\ThriftClassLoader;
     use Thrift\Protocol\TBinaryProtocol;
-//use Thrift\Protocol\TCompactProtocol;
-//use Thrift\Transport\TSocket;
+    //use Thrift\Protocol\TCompactProtocol;
+    //use Thrift\Transport\TSocket;
     use Thrift\Transport\TPhpStream;
     use Thrift\Transport\TBufferedTransport;
     use App\Soa\idl\PhpRemote\PhpRemoteIf;
     use App\Soa\idl\PhpRemote\PhpRemoteProcessor;
     use Log;
+
     use App\Entity\Member;
 
 
 
 
-class TestController extends Controller implements PhpRemoteIf{
-    public function processFunc($inMethod, $inParams){}
-    public function getFunc($inMethod, $inParams){}
-    public function test(){
+class TestController extends Controller {
+
+    public function index(){
 
         $SoaRoot = '/mnt/hgfs/linux_code/lumen-api/app/Soa';
         // Load
@@ -43,26 +44,27 @@ class TestController extends Controller implements PhpRemoteIf{
         $pra ='pzl';
         $handler = new HomeController();
         $result = $handler->getFunc($men,$pra);
-        echo $result;
+       // return $men;
         $processor = new PhpRemoteProcessor($handler);
-
         $phpStream = new TPhpStream(TPhpStream::MODE_R | TPhpStream::MODE_W);
-
         $transport = new TBufferedTransport($phpStream);
-
         $protocol = new TBinaryProtocol($transport, true, true);
+        //$protocol = new TCompactProtocol($transport, true, true);
 
-//$protocol = new TCompactProtocol($transport, true, true);
-        $member = Member::where('id',2)->get();
-
+        $transport->open();
         $processor->process($protocol, $protocol);
         $transport->close();
 
     }
     public function info(){
-        $member = Member::where('id',2)->get();
+        //$member = Product::find(1);
+        $member = Product::where('id',1)->first();
         Log::info('info');
         return $member;
+    }
+    public function cate(){
+        $result =  redirect('/category');
+        return $result;
     }
 }
 

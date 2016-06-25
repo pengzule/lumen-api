@@ -47,4 +47,5 @@ return [
 
     'client_secret' => env('CLIENT_SECRET', 'B1B1Hu8!'),
 
+    'timezone' => 'PRC',
 ];

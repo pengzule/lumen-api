@@ -1,12 +1,4 @@
 <?php
-
-/*
-service PhpRemote{
- bool processFunc(1: string inMethod, 2:string inParams),
- string getFunc(1: string inMethod, 2:string inParams),
-}
-*/
-
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -32,15 +24,7 @@ require_once __DIR__.'/../../bootstrap/app.php';
 |
 */
 
-
-	error_reporting(E_ALL);
-
-	//$thriftLib = '/jqm/smarthome/thrift/thrift-0.9.3/lib/php/lib';
-	$SoaRoot = '/mnt/hgfs/linux_code/lumen-api/public';
-	require_once $SoaRoot. '/Soa/Thrift/ClassLoader/ThriftClassLoader.php';
-	require_once $SoaRoot. '/Soa/idl/PhpRemote/PhpRemote.php';
-	require_once $SoaRoot. '/Soa/idl/PhpRemote/Types.php';
-
+	require_once __DIR__. '/idl/PhpRemote/PhpRemote.php';
 
 	// 没有设置路径就直接把文件夹拷贝到当前目录下
 	use Thrift\ClassLoader\ThriftClassLoader;
@@ -49,36 +33,44 @@ require_once __DIR__.'/../../bootstrap/app.php';
 	//use Thrift\Transport\TSocket;
 	use Thrift\Transport\TPhpStream;
 	use Thrift\Transport\TBufferedTransport;
-		use Log;
-use App\Entity\Member;
-use Illuminate\Http\Request;
-
+	use Log;
+	use App\Http\Controllers\ThriftController;
+	use App\Http\Controllers\CategoryController;
+	use Eshop\Repositories\CategoryRepository;
 	// Load
 	$loader = new ThriftClassLoader();
-	$loader->registerNamespace('Thrift',$SoaRoot. '/Soa/');
-	$loader->registerDefinition('PhpRemote',$SoaRoot. '/Soa/idl/PhpRemote');
+	$loader->registerNamespace('Thrift',__DIR__);
+	$loader->registerDefinition('PhpRemote',__DIR__. '/idl/PhpRemote');
 	$loader->register();
 	if (php_sapi_name() == 'cli') {
   		ini_set("display_errors", "stderr");
 	}
 	
-	class PhpRemoteServer implements PhpRemoteIf 
+	class PhpRemoteServer implements PhpRemoteIf
 	{
 		public function processFunc($inMethod, $inParams)
 		{
-			file_put_contents('Serverlog.txt',$inMethod,FILE_APPEND);
-			file_put_contents('Serverlog.txt',$inMethod,FILE_APPEND);
-			return 1;
+
 		}
  		public function getFunc($inMethod, $inParams)
 		{
+			$test = new ThriftController;
+			switch ($inMethod)
+			{
+				case 1:
+					$result =  $test->test($inParams);
+					break;
+				case 2:
+					$result =  $test->getcate();
+					break;
+				case 3:
+					$result = "Number 3";
+					break;
+				default:
+					$result = "No number between 1 and 3";
+			}
+			return $result;
 
-			Log::info('aa');
-			$result = 'info';
-			$member = Member::where('id',2)->get();
-			file_put_contents('Serverlog.txt',$inMethod,FILE_APPEND);
-			file_put_contents('Serverlog.txt',$inMethod,FILE_APPEND);
-			return $member;
 		}
 	};
 

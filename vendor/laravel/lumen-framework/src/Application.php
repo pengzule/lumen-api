@@ -157,7 +157,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function __construct($basePath = null)
     {
-        date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
+        date_default_timezone_set(env('APP_TIMEZONE', 'PRC'));
 
         $this->basePath = $basePath;
         $this->bootstrapContainer();

@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\User;
+use Log;
+use App\Entity\Member;
+
+class ThriftController  extends Controller
+{
+  public function test()
+  {
+    $menber = Member::where('id',2)->get();
+    return $menber;
+  }
+}

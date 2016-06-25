@@ -11,12 +11,17 @@ class UserSeeder extends Seeder {
         $user = app()->make('App\User');
         $hasher = app()->make('hash');
 
-        $user->fill([
-            'name' => 'pengzule',
-            'email' => '295129789@qq.com',
-            'password' => $hasher->make('123456')
-        ]);
-        $user->save();
+
+        for ($i=0; $i < 10; $i++) {
+            $user->fill([
+                'name' => 'GenericAgent'.$i,
+                'ip' => '192.168.226.'.$i,
+                'port' => '8'.$i,
+                'parent'=>'127.0.0.1:80'
+            ]);
+            $user->save();
+        }
+
     }
 
 }

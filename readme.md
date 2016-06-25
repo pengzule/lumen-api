@@ -22,3 +22,14 @@ The Lumen framework is open-sourced software licensed under the [MIT license](ht
 #lumen-api
 # lumen-api
 # lumen-api
+
+
+1.在app目录下建立Eshop目录，在Eshop下建立Presenters、Repositories、Services目录
+
+2.修改composer.json中的autoload，添加新的namespace：Eshop
+  "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Eshop\\":"app/Eshop/"
+        },
+        

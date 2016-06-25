@@ -18,12 +18,11 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
-
+            "App\\": "app/",
+            "Eshop\\":"app/Eshop/"
         },
         "classmap": [
-            "database/",
-
+            "database/"
         ]
     },
     "autoload-dev": {
