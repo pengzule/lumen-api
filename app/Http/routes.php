@@ -17,7 +17,8 @@ $app->get('/', function () use ($app) {
 $app->get('/test', 'TestController@index');
 $app->get('/category','CategoryController@getCategory');
 
-$app->get('/form', 'GenericAgentController@index' );
+$app->get('/index', 'GenericAgentController@index' );
+$app->get('/parent', 'GenericAgentController@subchild' );
 
 $app->post('oauth/access_token', function() {
     return response()->json(app('oauth2-server.authorizer')->issueAccessToken());

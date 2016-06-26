@@ -46,7 +46,7 @@
             <div id="sidebar" class="span3">
                 <div class="well well-small">System Menu</div>
                 <ul id="sideManu" class="nav nav-tabs nav-stacked">
-                    <li class="subMenu open"><a> 127.0.0.1:80</a>
+                    <li class="subMenu open parent" id="80"><a> 127.0.0.1:80</a>
                         <ul>
                             <li><a class="active" ><i class="icon-chevron-right"></i>127.0.0.1:80 </a></li>
                             <li><a ><i class="icon-chevron-right"></i>127.0.0.1:80</a></li>
@@ -54,7 +54,7 @@
                             <li><a ><i class="icon-chevron-right"></i>127.0.0.1:80</a></li>
                         </ul>
                     </li>
-                    <li class="subMenu"><a> 127.0.0.1:90 </a>
+                    <li class="subMenu parent" id="90"><a> 127.0.0.1:90 </a>
                         <ul style="display:none">
                             <li><a ><i class="icon-chevron-right"></i> 127.0.0.1:90</a></li>
                             <li><a ><i class="icon-chevron-right"></i> 127.0.0.1:90</a></li>
@@ -65,7 +65,7 @@
                             <li><a ><i class="icon-chevron-right"></i> 127.0.0.1:90</a></li>
                         </ul>
                     </li>
-                    <li class="subMenu"><a>127.0.0.1:10</a>
+                    <li class="subMenu parent " id="10"><a>127.0.0.1:10</a>
                         <ul style="display:none">
                             <li><a ><i class="icon-chevron-right"></i> 127.0.0.1:90</a></li>
                             <li><a ><i class="icon-chevron-right"></i> 127.0.0.1:90</a></li>
@@ -86,8 +86,8 @@
             <!-- Sidebar end=============================================== -->
             <div class="span9" id="mainCol">
                 <ul class="breadcrumb">
-                    <li><a href="index.html">System Menu</a> <span class="divider">/</span></li>
-                    <li class="active">127.0.0.1:80</li>
+                    <li><a >System Menu</a> <span class="divider">/</span></li>
+                    <li class="active" id="parent">127.0.0.1:80</li>
                 </ul>
 
                 <hr class="soft"/>
@@ -104,11 +104,12 @@
                         <th >Send Command</th>
                         <th >Send</th>
                     </tr>
-                    @foreach($ips as $ip)
+                    <div id="ipinfo">  
+                        @foreach($ips as $ip)
                     <tr>
                         <td>{{$ip->name}}</td>
                         <td>{{$ip->ip}}:{{$ip->port}}</td>
-                        <td>Jobs</td>
+                        <td>{{$time}}</td>
                         <td>
                             <select class="srchTxt" >
                                 <option value="">Trace</option>
@@ -131,6 +132,8 @@
                         </td>
                     </tr>
                     @endforeach
+                     </div>
+                  
                 </table>
 
                 <hr class="soft"/>
@@ -149,6 +152,84 @@
 <script src="themes/js/bootshop.js"></script>
 <script src="themes/js/jquery.lightbox-0.5.js"></script>
 
+
+<script type="text/javascript">
+        jQuery(document).ready(function() {
+            //绑定 点击事件
+            $(".parent").bind("click",function() {
+                var id = $(this).attr("id");
+                var name = '';
+              
+            
+                if (id == '80') {
+                    name = '127.0.0.1:80';
+                } else if (id == '90') {
+                    name = '127.0.0.1:90';
+                } else if (id == '10') {
+                    name = '127.0.0.1:10';
+                }
+             
+                $.ajax({
+                    type: "GET",
+                    url: '/parent',
+                    dataType: 'json',
+                    cache: false,
+                    data: {name:name, _token: "{{csrf_token()}}"},
+                    success: function(data) {
+                        console.log("获取:");
+                        console.log(data);                   
+
+                        $('#ipinfo').html('');
+                       
+                        if (data.ips == '')
+                        {
+
+                        }
+                        for(var i=0; i<data.ips.length; i++) {
+
+                            var node =
+                                        '<tr>'+
+                                        '<td>'+data.ips[i].name+'</td>'+
+                                        '<td>'+data.ips[i].ip+':'+data.ips[i].port+'</td>'+
+                                        '<td>'+data.time.date+'</td>'+
+                                        '<td>'+
+                                            '<select class="srchTxt" >'+
+                                                '<option value="">'+'Trace'+'</option>'+
+                                                '<option value="">'+'Debug'+'</option>'+
+                                                '<option value="">'+'Warming'+'</option>'+
+                                            '</select >'+
+                                        '</td>'+
+                                        '<td>'+'Online'+'</td>'+
+                                        '<td>'+
+                                            '<select>'+
+                                                '<option value="">'+'Online'+'</option>'+
+                                                '<option value="">'+'Offline'+'</option>'+
+                                            '</select>'+
+                                        '</td>'+
+                                        '<td>'+
+                                            '<input  type="text" >'+
+                                        '</td>'+
+                                        '<td>'+
+                                            '<button class="btn ">'+' Send'+'</button>'+
+                                        '</td>'+
+                                        '</tr>';
+ 
+                            $('#ipinfo').append(node);
+
+                        }
+     
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr);
+                        console.log(status);
+                        console.log(error);
+                    }
+                });
+            });
+        });
+
+       
+    </script>
 <!-- Themes switcher section ============================================================================================= -->
 
 <span id="themesBtn"></span>
