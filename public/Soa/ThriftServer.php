@@ -37,6 +37,8 @@ require_once __DIR__.'/../../bootstrap/app.php';
 	use App\Http\Controllers\ThriftController;
 	use App\Http\Controllers\CategoryController;
 	use Eshop\Repositories\CategoryRepository;
+    use App\User;
+    use App\Entity\Category;
 	// Load
 	$loader = new ThriftClassLoader();
 	$loader->registerNamespace('Thrift',__DIR__);
@@ -54,14 +56,15 @@ require_once __DIR__.'/../../bootstrap/app.php';
 		}
  		public function getFunc($inMethod, $inParams)
 		{
-			$test = new ThriftController;
+			$class = new CategoryController(new CategoryRepository(new Category));
+			$test = new ThriftController(new User);
 			switch ($inMethod)
 			{
 				case 1:
 					$result =  $test->test($inParams);
 					break;
 				case 2:
-					$result =  $test->getcate();
+					$result =  $class->getCategory();
 					break;
 				case 3:
 					$result = "Number 3";

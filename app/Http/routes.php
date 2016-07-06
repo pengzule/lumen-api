@@ -17,6 +17,9 @@ $app->get('/', function () use ($app) {
 $app->get('/test', 'TestController@index');
 $app->get('/category','CategoryController@getCategory');
 
+
+
+
 $app->get('/index', 'GenericAgentController@index' );
 $app->get('/parent', 'GenericAgentController@subchild' );
 

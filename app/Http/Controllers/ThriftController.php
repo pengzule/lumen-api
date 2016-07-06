@@ -14,12 +14,17 @@ class ThriftController  extends Controller
    * @param  $request
    * @return mixed
      */
+  public function __construct(User $users)
+  {
+    $this->users = $users;
+  }
 
   public function test($request)
   {
     $result = json_decode($request);
 
     $menber = Product::whereIn('id',$result)->first();
+    $menber = $menber->id;
     return $menber;
   }
 

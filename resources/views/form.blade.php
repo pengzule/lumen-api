@@ -91,7 +91,7 @@
                 </ul>
 
                 <hr class="soft"/>
-
+                <div id="ipinfo">
                 <table>
 
                     <tr>
@@ -104,7 +104,7 @@
                         <th >Send Command</th>
                         <th >Send</th>
                     </tr>
-                    <div id="ipinfo">  
+
                         @foreach($ips as $ip)
                     <tr>
                         <td>{{$ip->name}}</td>
@@ -132,10 +132,10 @@
                         </td>
                     </tr>
                     @endforeach
-                     </div>
+
                   
                 </table>
-
+                </div>
                 <hr class="soft"/>
 
             </div>
@@ -180,11 +180,22 @@
                         console.log(data);                   
 
                         $('#ipinfo').html('');
-                       
-                        if (data.ips == '')
-                        {
+                        $('#parent').html('');
 
-                        }
+                        $('#parent').html(name);
+
+                        var top =   '<tr>'+
+                        '<th >'+'Name'+'</th>'+
+                        '<th >'+'IP:Port'+'</th>'+
+                        '<th >'+'Time'+'</th>'+
+                        '<th >'+'LogLevel'+'</th>'+
+                        '<th >'+'State'+'</th>'+
+                        '<th >'+'Set State'+'</th>'+
+                        '<th >'+'Send Command'+'</th>'+
+                        '<th >'+'Send'+'</th>'+
+                        '</tr>';
+
+                        $('#ipinfo').append(top);
                         for(var i=0; i<data.ips.length; i++) {
 
                             var node =
@@ -215,7 +226,6 @@
                                         '</tr>';
  
                             $('#ipinfo').append(node);
-
                         }
      
                     },
